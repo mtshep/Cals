@@ -1,34 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home WiFi Network Topology</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script type="module">
-    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: false });
-
-    async function loadMermaidFile() {
-      try {
-        const response = await fetch("diagram.mmd");
-        const mmdText = await response.text();
-        document.querySelector(".mermaid").innerHTML = mmdText;
-        mermaid.init(undefined, document.querySelector(".mermaid"));
-      } catch (error) {
-        console.error("Error loading Mermaid file:", error);
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", loadMermaidFile);
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi Network Topology</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/babel-standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 <body class="bg-gray-100 p-6">
-  <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-xl font-bold mb-4">Home WiFi Network Topology</h1>
-    <div class="mb-6">
-      <div class="mermaid">Loading network diagram...</div>
-    </div>
-  </div>
+    <div id="root"></div>
+    <script type="text/babel">
+        function WifiTopologyView() {
+            const [showDevices, setShowDevices] = React.useState(false);
+
+            const devices = [
+                { name: "Ross-iPhone", type: "Wi-Fi", strength: 98 },
+                { name: "SonosZP", type: "Wi-Fi", strength: 184 },
+                { name: "SonosZP-3", type: "Wi-Fi", strength: 64 },
+                { name: "Samsung", type: "Wi-Fi", strength: 84 },
+            ];
+
+            return (
+                <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+                    <h1 className="text-xl font-bold mb-4">Home WiFi Network Topology</h1>
+                    <div className="mb-6">
+                        <img src="/mnt/data/Untitled diagram-2025-02-12-202431.jpeg" className="w-full border rounded-lg" alt="Network Topology Diagram" />
+                    </div>
+                    <div className="mb-4">
+                        <button className="flex items-center font-bold text-blue-600" onClick={() => setShowDevices(!showDevices)}>
+                            {showDevices ? "▼" : "▶"} <span className="ml-2">Your Current Connected Devices</span>
+                        </button>
+                    </div>
+                    {showDevices && (
+                        <table className="w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                    <th className="border p-2">Device Name</th>
+                                    <th className="border p-2">Connection Type</th>
+                                    <th className="border p-2">Signal Strength</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {devices.map((device, index) => (
+                                    <tr key={index} className="border">
+                                        <td className="border p-2">{device.name}</td>
+                                        <td className="border p-2">{device.type}</td>
+                                        <td className="border p-2">{device.strength}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                    <div className="mt-6 p-4 border-t">
+                        <p>If you're still having issues, please visit our knowledge base.</p>
+                        <p className="mt-2 font-bold">Would you like to speak to our support team?</p>
+                        <ul className="mt-2">
+                            <li><button className="w-full bg-blue-500 text-white p-2 rounded mt-2">Start a New Chat</button></li>
+                            <li><button className="w-full bg-blue-500 text-white p-2 rounded mt-2">Create a Support Ticket</button></li>
+                            <li className="mt-2">Call: <strong>624624</strong></li>
+                            <li className="mt-2">WhatsApp Support</li>
+                        </ul>
+                    </div>
+                </div>
+            );
+        }
+        ReactDOM.render(<WifiTopologyView />, document.getElementById("root"));
+    </script>
 </body>
 </html>
